@@ -1,7 +1,5 @@
 <template>
   <div>
-    <p>This is the not fun page</p>
-    <NuxtLink to="/fun">Fun page</NuxtLink>
     <get-all name="addresses"></get-all>
   </div>
 </template>
