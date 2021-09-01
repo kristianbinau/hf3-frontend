@@ -71,16 +71,20 @@ export default {
       default: undefined,
     },
   },
+
   data() {
     return {
       request: [],
+      url: this.route !== undefined ? this.route : `/api/${'api/' + this.name}`,
     }
   },
+
   async fetch() {
     this.request = await fetch(`/api/${'api/' + this.name}`).then(res => {
       return res.json();
     })
   },
+
   computed: {
     filteredData() {
       const copyOfData = JSON.parse(JSON.stringify(this.request.data));
@@ -91,6 +95,7 @@ export default {
       });
     },
   },
+
   methods: {
     editRow(id) {
       const rowIndex = this.filteredData.map(item => item.id).indexOf(id);

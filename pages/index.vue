@@ -1,7 +1,19 @@
 <template>
-  <Tutorial/>
+  <div></div>
 </template>
 
 <script>
-export default {}
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  },
+
+  created() {
+    if (this.user === null) {
+      this.$router.push('/login')
+    }
+  },
+}
 </script>
