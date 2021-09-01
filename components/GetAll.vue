@@ -74,21 +74,10 @@ export default {
   data() {
     return {
       request: [],
-      url: this.route !== undefined ? this.route : 'https://hf3.binau.dev/api/' + this.name,
     }
   },
   async fetch() {
-    this.request = await fetch(`/api/${'sanctum/csrf-cookie'}`).then(res => {
-      console.log(res);
-      console.log(res.json());
-      const answer = this.$axios.$post(`/api/${'login'}`, {'email': '123@123.com', 'password': '12345678'}).then(res => {
-        const answer = this.$axios.$get(`/api/${'api/addresses'}`).then(res => {
-          return res;
-        });
-        console.log(answer)
-        return res;
-      });
-      console.log(answer)
+    this.request = await fetch(`/api/${'api/' + this.name}`).then(res => {
       return res.json();
     })
   },
@@ -118,14 +107,6 @@ export default {
         return res;
       });
     },
-    methods: {
-      async login() {
-        const res = await this.$axios.$post('https://hf3.binau.dev/login', {'email': '123@123.com', 'password': '12345678'}).then(res => {
-          return res;
-        });
-        console.log(res)
-      }
-    }
   },
 }
 </script>
