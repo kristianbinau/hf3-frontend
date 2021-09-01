@@ -81,10 +81,14 @@ export default {
     this.request = await fetch(`/api/${'sanctum/csrf-cookie'}`).then(res => {
       console.log(res);
       console.log(res.json());
-      const de = this.$axios.$post(`/api/${'login'}`, {'email': '123@123.com', 'password': '12345678'}).then(res => {
-        return de;
+      const answer = this.$axios.$post(`/api/${'login'}`, {'email': '123@123.com', 'password': '12345678'}).then(res => {
+        const answer = this.$axios.$get(`/api/${'api/addresses'}`).then(res => {
+          return res;
+        });
+        console.log(answer)
+        return res;
       });
-      console.log(de)
+      console.log(answer)
       return res.json();
     })
   },
