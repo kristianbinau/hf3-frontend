@@ -78,7 +78,15 @@ export default {
     }
   },
   async fetch() {
-    this.request = await fetch(this.url).then(res => res.json())
+    this.request = await fetch(`/api/${'sanctum/csrf-cookie'}`).then(res => {
+      console.log(res);
+      console.log(res.json());
+      const de = this.$axios.$post(`/api/${'login'}`, {'email': '123@123.com', 'password': '12345678'}).then(res => {
+        return de;
+      });
+      console.log(de)
+      return res.json();
+    })
   },
   computed: {
     filteredData() {
@@ -106,6 +114,14 @@ export default {
         return res;
       });
     },
+    methods: {
+      async login() {
+        const res = await this.$axios.$post('https://hf3.binau.dev/login', {'email': '123@123.com', 'password': '12345678'}).then(res => {
+          return res;
+        });
+        console.log(res)
+      }
+    }
   },
 }
 </script>
