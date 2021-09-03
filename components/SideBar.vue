@@ -108,12 +108,14 @@ export default {
 
           /* User is not logged in */
           this.$store.commit('setUser', null)
+          this.$router.push('/login');
           return null
         })
         .catch(function (error) {
           /* Endpoint failure or.. */
           /* User is not logged in */
           this.$store.commit('setUser', null)
+          this.$router.push('/login');
           return error
         })
     },

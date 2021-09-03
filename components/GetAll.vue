@@ -11,10 +11,10 @@
                     scope='col' class='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>
                   {{ index }}
                 </th>
-                <th scope='col' class='relative px-6 py-3'>
+                <th scope='col' class='edit-button relative px-6 py-3'>
                   <span class='sr-only'>Edit</span>
                 </th>
-                <th scope='col' class='relative px-6 py-3'>
+                <th scope='col' class='delete-button relative px-6 py-3'>
                   <span class='sr-only'>Delete</span>
                 </th>
               </tr>
@@ -24,7 +24,7 @@
                 <td v-for='(item, index) of row' :key='index' class='px-6 py-4 whitespace-nowrap'>
                   <div class='text-sm text-gray-900'>{{ item }}</div>
                 </td>
-                <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                <td class='edit-button px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                   <button type='button'
                           class='inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                           @click='editRow(row.id)'>
@@ -36,7 +36,7 @@
                     Edit
                   </button>
                 </td>
-                <td class='px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
+                <td class='delete-button px-6 py-4 whitespace-nowrap text-right text-sm font-medium'>
                   <button type='button'
                           class='inline-flex items-center px-4 py-2 border border-red-500 rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
                           @click='deleteRow(row.id)'>
@@ -67,7 +67,7 @@
                   <p class='text-sm text-gray-700'>
                     Showing
                     {{ ' ' }}
-                    <span class='font-medium'>{{ request.to - request.per_page + 1 }}</span>
+                    <span class='font-medium'>{{ request.from }}</span>
                     {{ ' ' }}
                     to
                     {{ ' ' }}
@@ -137,11 +137,6 @@ export default {
       type: String,
       required: true
     },
-    description: {
-      type: String,
-      required: false,
-      default: undefined
-    },
     route: {
       type: String,
       required: false,
@@ -158,7 +153,7 @@ export default {
   },
 
   async fetch() {
-    this.request = await fetch(`/api/${'api/' + this.name + '?page=' + this.page}`).then(res => {
+    this.request = await fetch(this.url).then(res => {
       return res.json()
     })
   },
@@ -176,13 +171,7 @@ export default {
 
   methods: {
     editRow(id) {
-      const rowIndex = this.filteredData.map(item => item.id).indexOf(id)
-      this.request.data[rowIndex].editing = true
-    },
-
-    saveRow(id) {
-      const rowIndex = this.filteredData.map(item => item.id).indexOf(id)
-      this.request.data[rowIndex].editing = false
+      this.$router.push('/' + this.name + '/' + id);
     },
 
     nextPage() {
@@ -212,7 +201,10 @@ export default {
 </script>
 
 <style lang='scss' scoped>
-.uppercase-first:first-letter {
-  text-transform: capitalize;
+.edit-button {
+  width: 130px;
+}
+.delete-button {
+  width: 145px;
 }
 </style>
