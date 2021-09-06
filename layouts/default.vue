@@ -1,7 +1,8 @@
 <template>
   <div>
-    <side-bar>
+    <auth-user></auth-user>
+    <layout-side-bar>
       <Nuxt />
-    </side-bar>
+    </layout-side-bar>
   </div>
 </template>

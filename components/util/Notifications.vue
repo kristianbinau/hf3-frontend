@@ -26,8 +26,6 @@ export default {
         return;
       }
 
-      console.log('New Notification')
-
       this.addNotification(val);
     },
   },

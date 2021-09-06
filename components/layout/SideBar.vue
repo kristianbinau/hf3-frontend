@@ -90,36 +90,6 @@ export default {
       return this.$store.state.user
     }
   },
-
-  created() {
-    this.getUser();
-  },
-
-  methods: {
-    async getUser() {
-      /* Request logged in user */
-      return await this.$axios.get(`/api/${'api/user'}`)
-        .then(res => {
-          /* User is logged in */
-          if (res.status === 200) {
-            this.$store.commit('setUser', res.data)
-            return res.data
-          }
-
-          /* User is not logged in */
-          this.$store.commit('setUser', null)
-          this.$router.push('/login');
-          return null
-        })
-        .catch(function (error) {
-          /* Endpoint failure or.. */
-          /* User is not logged in */
-          this.$store.commit('setUser', null)
-          this.$router.push('/login');
-          return error
-        })
-    },
-  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <notifications :set-notification="notification"></notifications>
+    <util-notifications :set-notification="notification"></util-notifications>
 
     <div class='px-4 py-5 bg-white sm:p-6'>
       <div class='grid grid-cols-6 gap-6'>
