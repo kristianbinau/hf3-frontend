@@ -53,7 +53,7 @@ export default {
   },
 
   proxy: {
-    '/api/': { target: 'https://hf3.binau.dev/', pathRewrite: {'^/api/': ''}, changeOrigin: true }
+    'hf3.binau.dev/': { target: 'https://hf3.binau.dev/', pathRewrite: {'^/api/': ''}, changeOrigin: true }
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
