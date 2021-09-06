@@ -49,9 +49,12 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-
+    proxy: true,
   },
 
+  proxy: {
+    '/api/': { target: 'https://hf3.binau.dev/', pathRewrite: {'^/api/': ''}, changeOrigin: true }
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

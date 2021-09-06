@@ -1,6 +1,6 @@
 <template>
   <div class="fixed top-3 right-3 flex flex-col">
-      <notification v-for='notification in notifications' :key="notification.id" :notification="notification"></notification>
+      <util-notification v-for='notification in notifications' :key="notification.id" :notification="notification"></util-notification>
   </div>
 </template>
 

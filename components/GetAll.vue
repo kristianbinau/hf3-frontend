@@ -87,7 +87,7 @@ export default {
     return {
       request: [],
       page: 1,
-      url: this.route !== undefined ? this.route : `https://hf3.binau.dev/${'api/' + this.name}`
+      url: this.route !== undefined ? this.route : `/api/${'api/' + this.name}`
     }
   },
 

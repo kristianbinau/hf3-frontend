@@ -94,7 +94,7 @@ export default {
 
       const vm = this;
       /* Request CSRF token */
-      await this.$axios.get(`https://hf3.binau.dev/${'sanctum/csrf-cookie'}`)
+      await this.$axios.get(`/api/${'sanctum/csrf-cookie'}`)
         .then(res => {
           /* CSRF request failed, shouldn't happen. */
           if (res.status !== 204) {
@@ -104,7 +104,7 @@ export default {
           }
 
           /* Send login request */
-          this.$axios.post(`https://hf3.binau.dev/${'login'}`, {
+          this.$axios.post(`/api/${'login'}`, {
             'email': this.email,
             'password': this.password
           }, {
