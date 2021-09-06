@@ -6,32 +6,32 @@
       <div class="grid grid-cols-6 gap-6">
         <div class="col-span-6 sm:col-span-3">
           <label for="id" class="block text-sm font-medium text-gray-700">Id</label>
-          <input id="id" v-model="customer.id" disabled type="text" name="id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="id" v-model="customer.id" disabled type="text" name="id" :class="{'border-red-600': errors && errors.id}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
 
         <div class="col-span-6 sm:col-span-3">
           <label for="login-id" class="block text-sm font-medium text-gray-700">Login Id</label>
-          <input id="login-id" v-model="customer.login_id" type="text" name="login-id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="login-id" v-model="customer.login_id" type="text" name="login-id" :class="{'border-red-600': errors && errors.login_id}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
 
         <div class="col-span-6 sm:col-span-3">
           <label for="address-id" class="block text-sm font-medium text-gray-700">Address Id</label>
-          <input id="address-id" v-model="customer.address_id" type="text" name="address-id" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="address-id" v-model="customer.address_id" type="text" name="address-id" :class="{'border-red-600': errors && errors.address_id}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
 
         <div class="col-span-6">
           <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-          <input id="name" v-model="customer.name" type="text" name="name" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="name" v-model="customer.name" type="text" name="name" :class="{'border-red-600': errors && errors.name}" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
 
         <div class="col-span-6">
           <label for="created_at" class="block text-sm font-medium text-gray-700">Created At</label>
-          <input id="created_at" v-model="customer.created_at" disabled type="text" name="created_at" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="created_at" v-model="customer.created_at" disabled type="text" :class="{'border-red-600': errors && errors.created_at}" name="created_at" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
 
         <div class="col-span-6">
           <label for="updated_at" class="block text-sm font-medium text-gray-700">Updated At</label>
-          <input id="updated_at" v-model="customer.updated_at" disabled type="text" name="updated_at" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
+          <input id="updated_at" v-model="customer.updated_at" disabled type="text" :class="{'border-red-600': errors && errors.updated_at}" name="updated_at" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
         </div>
       </div>
     </div>
@@ -69,17 +69,20 @@ export default {
       },
       url: this.route !== undefined ? this.route : `/api/${'api/customers'}`,
       notification: null,
+      errors: null,
     }
   },
 
   created() {
     if (!(this.customerObject && Object.keys(this.customerObject).length === 0 && this.customerObject.constructor === Object)) {
-      this.customer = this.customerObject
+      this.customer = JSON.parse(JSON.stringify(this.customerObject));
     }
   },
 
   methods: {
     save() {
+      this.errors = null; // Reset Errors
+
       if (this.customerObject && Object.keys(this.customerObject).length === 0 && this.customerObject.constructor === Object) {
         // Create
         this.create();
@@ -90,6 +93,7 @@ export default {
     },
 
     create() {
+      const vm = this;
       this.$axios.post(this.url, {
         'login_id': this.customer.login_id,
         'address_id': this.customer.address_id,
@@ -102,11 +106,18 @@ export default {
               long: 'Customer was created successfully',
               type: 'message',
             }
+            return;
           }
+
+          this.handleError(res);
+        })
+        .catch(function (error) {
+          vm.handleError(error.response);
         })
     },
 
     update() {
+      const vm = this;
       const data = {
         'login_id': this.customer.login_id,
         'address_id': this.customer.address_id,
@@ -125,9 +136,33 @@ export default {
               long: 'Customer was updated successfully',
               type: 'message',
             }
+            return;
           }
+
+          this.handleError(res);
+        })
+        .catch(function (error) {
+          vm.handleError(error.response);
         })
     },
+
+    async handleError(errorResponse) {
+      if (errorResponse.data.errors) {
+        this.errors = errorResponse.data.errors;
+        for await (const [key, value] of Object.entries(this.errors)) {
+          this.notification = {
+            short: 'Error!',
+            long: value[0],
+            type: 'error',
+            timeout: 10000,
+            key,
+          }
+        }
+      }
+
+      // eslint-disable-next-line no-console
+      console.error('Failed', errorResponse);
+    }
   }
 }
 </script>

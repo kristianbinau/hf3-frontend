@@ -1,11 +1,7 @@
 <template>
   <div class='min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8'>
-    <div v-if="error !== null"
-         class="fixed top-3 right-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded" role="alert">
-      <strong class="font-bold">{{ error.short }}</strong>
-      <span class="block sm:inline">{{ error.long }}</span>
-      <span class="absolute top-0 bottom-0 right-0 px-4 py-3"></span>
-    </div>
+    <notifications :set-notification="notification"></notifications>
+
     <div class='max-w-md w-full space-y-8'>
       <div>
         <img class='mx-auto h-12 w-auto' src='https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg'
@@ -73,7 +69,7 @@ export default {
     return {
       email: '',
       password: '',
-      error: null,
+      notification: null,
     }
   },
 
@@ -137,15 +133,11 @@ export default {
     handleFailedLogin(errorResponse) {
       /* Wrong input */
       if (errorResponse.status === 422) {
-        this.error = {
+        this.notification = {
           short: 'Error!',
-          long: 'These credentials do not match our records.'
+          long: 'These credentials do not match our records.',
+          type: 'error',
         };
-        const vm = this;
-        setTimeout(function () {
-          vm.error = null;
-        }, 5000);
-        return;
       }
 
       /* Login failed, shouldn't happen. */

@@ -1,7 +1,7 @@
 <template>
   <div v-if="validated"
     :class="{'bg-red-100 border-red-400 text-red-700': notification.type === 'error', 'bg-green-100 border-green-400 text-green-700': notification.type === 'message'}"
-    class='border px-4 py-3 rounded' role='alert'>
+    class='border px-4 py-3 rounded mb-2' role='alert'>
     <strong class='font-bold'>{{ notification.short }}</strong>
     <span class='block sm:inline'>{{ notification.long }}</span>
     <span class='absolute top-0 bottom-0 right-0 px-4 py-3'></span>
@@ -19,7 +19,6 @@ export default {
 
   computed: {
     validated() {
-      console.log('wat')
       if (!this.notification.short) {
         // eslint-disable-next-line no-console
         console.error('Notification validation failed', 'No short')
@@ -41,10 +40,6 @@ export default {
       return true;
     }
   },
-
-  created() {
-    console.log('notification created');
-  }
 }
 </script>
 

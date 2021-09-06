@@ -1,6 +1,6 @@
 <template>
   <div class="fixed top-3 right-3 flex flex-col">
-      <notification v-for='(notification, index) in notifications' :key="index" :notification="notification"></notification>
+      <notification v-for='notification in notifications' :key="notification.id" :notification="notification"></notification>
   </div>
 </template>
 
@@ -16,7 +16,7 @@ export default {
 
   data() {
     return {
-      notifications: [],
+      notifications: {},
     }
   },
 
@@ -26,25 +26,25 @@ export default {
         return;
       }
 
+      console.log('New Notification')
+
       this.addNotification(val);
     },
   },
 
   methods: {
     addNotification(notification) {
-      console.log(notification);
-      const notificationIndex = what; // TODO: FIND GENERATE ID METHOD, MOST BE INT AND UNIQUE
+      const notificationIndex = (Math.random() + 1).toString(36).substring(7);
       this.$set(this.notifications, notificationIndex, {
+        id: notificationIndex,
         short: notification.short,
         long: notification.long,
         type: notification.type,
       })
-      /*
-      setTimeout(() => {
-        this.notifications.splice(notificationIndex, 1);
-      }, notification.timeout ? notification.timeout : 5000);
 
-       */
+      setTimeout(() => {
+        this.$delete(this.notifications, notificationIndex)
+      }, notification.timeout ? notification.timeout : 5000);
     }
   }
 }
