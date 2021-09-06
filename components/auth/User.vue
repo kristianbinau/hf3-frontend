@@ -12,7 +12,7 @@ export default {
     async getUser() {
       const vm = this
       /* Request logged in user */
-      return await this.$axios.get(`hf3.binau.dev/${'api/user'}`)
+      return await this.$axios.get(`https://hf3.binau.dev/${'api/user'}`)
         .then(res => {
           /* User is logged in */
           if (res.status === 200) {
