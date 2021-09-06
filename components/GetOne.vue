@@ -15,6 +15,7 @@
               <template v-if="request">
                 <addresses-form v-if="name === 'addresses'" :address-object="request" ></addresses-form>
                 <customers-form v-if="name === 'customers'" :customer-object="request" ></customers-form>
+                <products-form v-if="name === 'products'" :product-object="request" ></products-form>
               </template>
             </div>
         </div>
