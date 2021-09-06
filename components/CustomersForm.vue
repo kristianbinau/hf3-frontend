@@ -101,6 +101,10 @@ export default {
       })
         .then(res => {
           if (res.status === 200) {
+            this.customer.id = res.data.id;
+            this.customer.updated_at = res.data.updated_at;
+            this.customer.created_at = res.data.created_at;
+
             this.notification = {
               short: 'Success!',
               long: 'Customer was created successfully',
@@ -131,6 +135,8 @@ export default {
       this.$axios.patch(this.url + '/' + this.customerObject.id, data)
         .then(res => {
           if (res.status === 200) {
+            this.customer.updated_at = res.data.updated_at;
+
             this.notification = {
               short: 'Success!',
               long: 'Customer was updated successfully',

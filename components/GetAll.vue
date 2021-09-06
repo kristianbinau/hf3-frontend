@@ -153,7 +153,7 @@ export default {
   },
 
   async fetch() {
-    this.request = await fetch(this.url).then(res => {
+    this.request = await fetch(this.url + '?page=' + this.page).then(res => {
       return res.json()
     })
   },
@@ -175,11 +175,19 @@ export default {
     },
 
     nextPage() {
+      if (this.page === this.request.last_page) {
+        return;
+      }
+
       this.page++
       this.$fetch()
     },
 
     previousPage() {
+      if (this.page === 1) {
+        return;
+      }
+
       this.page--
       this.$fetch()
     },
